@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Button } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Button, Image, SafeAreaView } from 'react-native';
 import RegisComp from '../../components/RegisterComponent'
 import { useDispatch } from 'react-redux';
-import { userSignUp } from '../../actions/userAction'
+import { userSignUp, isLoading } from '../../actions/userAction'
 
 const Tabs = createMaterialTopTabNavigator();
 
@@ -17,32 +17,77 @@ const pageTwo = (props) => {
     <RegisComp pageTwo nav={props.navigation} route={props.route} />
   )
 }
+const pageThree = (props) => {
+  return (
+    <RegisComp pageThree nav={props.navigation} route={props.route} />
+  )
+}
 
 const register = (props) => {
 
   const dispatch = useDispatch()
+  // const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [isBottomBar, setBottomBar] = useState(true);
+  const [marginLogo, setMarginLogo] = useState('25%');
+
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        // setKeyboardVisible(true); 
+        setBottomBar(false)
+        setMarginLogo('10%')
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        // setKeyboardVisible(false);
+        setBottomBar(true)
+        setMarginLogo('25%')
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   let btnTitle = 'Next'
   let state = props.route.state
-  let user, data;
+  let user, data, data2;
 
   if (state) {
-    if (state.index === 1) btnTitle = 'Complete Registration'
+    if (state.index === 2) btnTitle = 'Complete Registration'
     user = state.routes[0].params
     data = state.routes[1].params
+    data2 = state.routes[2].params
   }
+  // const userdata = { ...user, ...data, ...data2 }
+  // console.log(userdata);
 
   const doSignUp = () => {
-    const userdata = { ...user, ...data }
+    const userdata = { ...user, ...data, ...data2 }
     dispatch(userSignUp(userdata))
+    dispatch(isLoading(15000))
   }
 
   const nextButton = () => {
     if (state.index === 1) {
-      if (data.jenis_kelamin === '' || data.nama === '') return alert('Harap isi lengkap data.');
+      if (data.jeniskelamin === '' || data.nama === '' || data.tanggallahir === '' || data.telepon === '') {
+        alert('Harap isi lengkap data.');
+        return
+      }
+      props.navigation.navigate('regisPage 3', Keyboard.dismiss())
+      return
+    }
+    if (state.index === 2) {
+      if (data2.alasan === '' || data2.fotopath === '' || data2.pekerjaan === '') return alert('Harap isi lengkap data.');
       doSignUp()
       return
     }
+
     let text = user.email
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let passw = /^[A-Za-z]\w{5,14}$/;
@@ -57,31 +102,50 @@ const register = (props) => {
   const backButton = () => {
     let back = 'Login'
     if (state.index === 1) back = 'regisPage 1'
+    if (state.index === 2) back = 'regisPage 2'
     props.navigation.navigate(back)
   }
 
   return (
     <>
-      <Tabs.Navigator tabBarPosition='none' initialRouteName="regisPage 1" swipeEnabled={true}>
-        <Tabs.Screen name='regisPage 1' component={pageOne} />
-        <Tabs.Screen name='regisPage 2' component={pageTwo} />
-      </Tabs.Navigator>
+      <SafeAreaView style={styles.container} >
+        <View style={{ alignItems: 'center', marginTop: marginLogo }}>
+          <Image
+            style={styles.logo}
+            source={require('../../img/logo.png')}
+          />
+        </View>
 
-      {/* NAVIGASI BAWAH */}
-      <View style={styles.bottomBtn}>
-        <TouchableOpacity />
-        <TouchableOpacity style={styles.inputBtn} onPress={() => backButton()}>
-          <Text style={styles.btnTitle}>Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.inputBtn} onPress={() => nextButton()}>
-          <Text style={styles.btnTitle} >{btnTitle}</Text>
-        </TouchableOpacity>
-      </View>
+        {/* PAGES */}
+        <Tabs.Navigator tabBarPosition='none' initialRouteName="regisPage 1" backBehavior={'initialRoute'} swipeEnabled={true}>
+          <Tabs.Screen name='regisPage 1' component={pageOne} />
+          <Tabs.Screen name='regisPage 2' component={pageTwo} />
+          <Tabs.Screen name='regisPage 3' component={pageThree} />
+        </Tabs.Navigator>
+
+        {/* NAVIGASI BAWAH */}
+        {isBottomBar ?
+          <View style={styles.bottomBtn}>
+      
+            <TouchableOpacity style={styles.inputBtn} activeOpacity={0.7} onPress={() => backButton()}>
+              <Text style={styles.btnTitle}>Back</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.inputBtn} activeOpacity={0.7} onPress={() => nextButton()}>
+              <Text style={styles.btnTitle} >{btnTitle}</Text>
+            </TouchableOpacity>
+          </View>
+          : null}
+      </SafeAreaView>
     </>
   )
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+  },
   btnTitle: {
     color: '#fff',
     fontWeight: 'bold',
@@ -90,11 +154,12 @@ const styles = StyleSheet.create({
     flex: 0,
     flexDirection: 'row',
     padding: 0,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    marginTop: 0
   },
   inputBtn: {
     width: '50%',
-    backgroundColor: '#00a2ff',
+    backgroundColor: '#2f4c88',
     borderRadius: 0,
     height: 50,
     alignItems: 'center',

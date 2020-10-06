@@ -1,42 +1,64 @@
 import React from 'react'
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput, Text } from 'react-native';
 
 const Input = (props) => {
-    let inputWidth;
-    if (props.inputWidth === undefined) { inputWidth = '80%' } //default input width
+    // console.log(props);
+    let height = 50;
+    let inputWidth = '80%';
+    let align = 'center';
+    let line = false;
+
+    if (props.height) {
+        height = props.height;
+        align = 'top';
+        line = true;
+    }
+    
+    if (props.inputWidth) inputWidth = props.inputWidth
+
     const styles = StyleSheet.create({
         inputText: {
-            height: 150,
-            color: 'gray',
-            fontSize: 15
+            height: height,
+            color: 'grey',
+            fontSize: 15,
+            textAlignVertical: align,
         },
         viewStyle: {
             width: inputWidth,
-            backgroundColor: 'white',
+            backgroundColor: '#fff',
+            elevation: 5,
             borderRadius: 25,
-            height: 50,
+            height: height,
             marginBottom: 20,
             justifyContent: 'center',
+            // alignItems: 'center',
             padding: 20,
             marginTop: props.mt
         }
     })
     return (
-        <View style={styles.viewStyle} >
-            <TextInput
-                editable={props.editable}
-                multiline={props.multiline}
-                textAlign={props.textAlign}
-                autoCompleteType={props.autoComplete}
-                keyboardType={props.keyboardType}
-                numberOfLines={props.numberOfLines}
-                style={styles.inputText}
-                value={props.value}
-                secureTextEntry={props.scr}
-                placeholder={props.placeholder}
-                onChangeText={(el) => props.set(el)}
-            />
-        </View>
+        <>
+            {props.name ?
+                <Text style={{ marginBottom: 5, fontSize: 20, fontWeight: 'bold', color: 'grey', alignItems: 'center' }}>{props.name}</Text>
+                : null}
+
+            <View style={styles.viewStyle} >
+
+                <TextInput
+                    editable={props.editable}
+                    textAlign={props.textAlign}
+                    autoCompleteType={props.autoComplete}
+                    multiline={line}
+                    keyboardType={props.keyboardType}
+                    style={styles.inputText}
+                    value={props.value}
+                    secureTextEntry={props.scr}
+                    placeholder={props.placeholder}
+                    onChangeText={(el) => props.set(el)}
+                />
+
+            </View>
+        </>
     )
 }
 

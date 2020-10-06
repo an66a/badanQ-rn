@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1052737042301",
+    "firebase_url": "https://fir-test-56144.firebaseio.com",
+    "project_id": "fir-test-56144",
+    "storage_bucket": "fir-test-56144.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1052737042301:android:014f4495b36a4eb8fa7e14",
+        "android_client_info": {
+          "package_name": "com.bcampg2project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1052737042301-bi4t4v26hffk3j3n49el850buq1s746o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGbCdBvn3PTiPPsFdcuFV41pYmk64pzOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1052737042301-bi4t4v26hffk3j3n49el850buq1s746o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

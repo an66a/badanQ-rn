@@ -5,15 +5,18 @@ import { Picker } from '@react-native-community/picker';
 const InputSelect = (props) => {
     let inputWidth;
     if (props.inputWidth === undefined) { inputWidth = '80%' } //default input width
+    
     const styles = StyleSheet.create({
         inputSelect: {
             height: 50,
             width: '100%',
+            color: 'grey'
         },
         viewStyle: {
             width: inputWidth,
-            backgroundColor: 'white',
+            backgroundColor: '#fff',
             borderRadius: 25,
+            elevation: 5,
             height: 50,
             marginBottom: 20,
             justifyContent: 'center',
