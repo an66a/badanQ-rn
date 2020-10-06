@@ -69,7 +69,8 @@ const registerComponent = (props) => {
             },
         };
         ImagePicker.showImagePicker(options, (response) => {
-            setParams({ fotopath: response.path })
+            // console.log(response);
+            setParams({ fotopath: response.path, fotoname: response.fileName })
             setPhoto(response.fileName)
         });
     }

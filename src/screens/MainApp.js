@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
+import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from '../screens/AuthScreen'
 import HomeScreen from './HomeScreen'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { checkUserState } from '../actions/userAction'
 
+const Stack = createStackNavigator();
 
-const MainApp = () => {
+const MainApp = (props) => {
+    const dispatch = useDispatch()
     const isLoading = useSelector(state => state.user.isLoading)
-    // const isLogin = useSelector(state => state.user.isLogin)
+    const isLogin = useSelector(state => state.user.isLogin)
 
-    const isLogin = true //set state login debug
-    
+    // const isLogin = false //set state login debug
+    useEffect(() => {
+        dispatch(checkUserState())
+    }, [])
+
     return (
         <>
             <Spinner
@@ -19,13 +26,13 @@ const MainApp = () => {
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
             />
-            {isLogin ? (
-                <HomeScreen />
-            )
-                : (
-                    <AuthScreen />
-                )}
-
+            <Stack.Navigator headerMode='none'>
+                {isLogin ?
+                    (<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: 'Home' }} />)
+                    :
+                    (<Stack.Screen name='AuthScreen' component={AuthScreen} options={{ title: 'Auth' }} />)
+                    }
+            </Stack.Navigator>
         </>
     )
 }

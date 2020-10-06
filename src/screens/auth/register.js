@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Button, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Alert, Image, SafeAreaView } from 'react-native';
 import RegisComp from '../../components/RegisterComponent'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { userSignUp, isLoading } from '../../actions/userAction'
 
 const Tabs = createMaterialTopTabNavigator();
@@ -26,7 +26,8 @@ const pageThree = (props) => {
 const register = (props) => {
 
   const dispatch = useDispatch()
-  // const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const regis = useSelector(state => state.user.isRegistered)
+  const [isRegistered, setRegis] = useState(regis)
   const [isBottomBar, setBottomBar] = useState(true);
   const [marginLogo, setMarginLogo] = useState('25%');
 
@@ -64,8 +65,6 @@ const register = (props) => {
     data = state.routes[1].params
     data2 = state.routes[2].params
   }
-  // const userdata = { ...user, ...data, ...data2 }
-  // console.log(userdata);
 
   const doSignUp = () => {
     const userdata = { ...user, ...data, ...data2 }
@@ -105,7 +104,17 @@ const register = (props) => {
     if (state.index === 2) back = 'regisPage 2'
     props.navigation.navigate(back)
   }
-
+  if (isRegistered) {
+    Alert.alert(
+      "Pendaftaran berhasil",
+      "Kembali ke halaman login.",
+      [
+        {},
+        { text: "OK", onPress: () => props.navigation.navigate('Login', setRegis(false)) }
+      ],
+      { cancelable: false }
+    );
+  }
   return (
     <>
       <SafeAreaView style={styles.container} >
@@ -126,7 +135,7 @@ const register = (props) => {
         {/* NAVIGASI BAWAH */}
         {isBottomBar ?
           <View style={styles.bottomBtn}>
-      
+
             <TouchableOpacity style={styles.inputBtn} activeOpacity={0.7} onPress={() => backButton()}>
               <Text style={styles.btnTitle}>Back</Text>
             </TouchableOpacity>

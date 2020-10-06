@@ -31,7 +31,7 @@ const Input = (props) => {
             height: height,
             marginBottom: 20,
             justifyContent: 'center',
-            // alignItems: 'center',
+            alignItems: props.alignItems,
             padding: 20,
             marginTop: props.mt
         }
@@ -39,7 +39,7 @@ const Input = (props) => {
     return (
         <>
             {props.name ?
-                <Text style={{ marginBottom: 5, fontSize: 20, fontWeight: 'bold', color: 'grey', alignItems: 'center' }}>{props.name}</Text>
+                <Text style={{ marginBottom: 5, fontSize: 20, fontWeight: 'bold', color: 'grey', alignItems: 'center', marginTop: props.mtop }}>{props.name}</Text>
                 : null}
 
             <View style={styles.viewStyle} >

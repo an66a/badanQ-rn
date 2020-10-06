@@ -8,7 +8,6 @@ const Drawer = createDrawerNavigator();
 // const Stack = createStackNavigator(); //pake stack navigation kdg gak jalan pas debug 
 
 const AuthScreen = (props) => {
-    console.log(props);
     return (
         <Drawer.Navigator headerMode='none'>
             <Drawer.Screen name='Login' component={LoginScreen} options={{ swipeEnabled: false }} />

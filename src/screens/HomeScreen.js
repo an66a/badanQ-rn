@@ -1,9 +1,12 @@
 import React from 'react'
-import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { Icon } from 'react-native-elements';
 import MainHome from './home/MainHome';
 import { BMI, rencanaBB, recordBB, ukurKalori } from './mainFeatures'
 import { contentScreen, programScreen } from './instructorFeatures'
+import Profile from './profile/profile'
+import { View, TouchableOpacity } from 'react-native';
+// import {  } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -20,12 +23,13 @@ const HomeScreen = (props) => {
             <Stack.Screen name={'Home'} component={MainHome}
                 options={{
                     headerLeft: () => (
+                        <TouchableOpacity style={{marginLeft: 10}}   onPress={() => props.navigation.navigate('Profile')}>
                         <Icon
                             name='user'
                             type='font-awesome'
-                            size={25}
-                        // onPress={() => props.navigation.openDrawer()}
+                            size={25}            
                         />
+                        </TouchableOpacity>
                     ),
                     // headerRight: () => (menu ? rightHeadBar : null)
                     title: 'BadanQ',
@@ -38,6 +42,7 @@ const HomeScreen = (props) => {
             <Stack.Screen name='recordBB' component={recordBB} options={{ title: 'Record BB' }} />
             <Stack.Screen name='contentScreen' component={contentScreen} options={{ title: 'Konten' }} />
             <Stack.Screen name='programScreen' component={programScreen} options={{ title: 'Program' }} />
+            <Stack.Screen name='Profile' component={Profile} options={{ title: 'Profile' }} />
         </Stack.Navigator>
 
     )

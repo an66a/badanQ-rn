@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Button, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Image, SafeAreaView } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { Button, Input, InputSelect } from '../../components/elements'
 
 
 const Tabs = createMaterialTopTabNavigator();

@@ -3,8 +3,8 @@ import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView } from 'react-na
 import { useSelector } from 'react-redux';
 
 const MainHome = (props) => {
-    // const isInstructor = useSelector(state => state.user.isInstructor)
-    const [isInstructor, setstate] = useState(true) // debug
+    const isInstructor = useSelector(state => state.user.isInstructor)
+    // const [isInstructor, setstate] = useState(true) // debug
 
     const navTo = props.navigation.navigate;
     return (
