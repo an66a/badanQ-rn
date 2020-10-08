@@ -6,6 +6,7 @@ import HomeScreen from './HomeScreen'
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { checkUserState } from '../actions/userAction'
+// import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createStackNavigator();
 
@@ -26,12 +27,13 @@ const MainApp = (props) => {
                 textContent={'Loading...'}
                 textStyle={styles.spinnerTextStyle}
             />
+
             <Stack.Navigator headerMode='none'>
                 {isLogin ?
-                    (<Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: 'Home' }} />)
+                    <Stack.Screen name='HomeScreen' component={HomeScreen} options={{ title: 'Home' }} />
                     :
-                    (<Stack.Screen name='AuthScreen' component={AuthScreen} options={{ title: 'Auth' }} />)
-                    }
+                    <Stack.Screen name='AuthScreen' component={AuthScreen} options={{ title: 'Auth' }} />
+                }
             </Stack.Navigator>
         </>
     )

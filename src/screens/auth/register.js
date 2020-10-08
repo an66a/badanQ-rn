@@ -24,10 +24,10 @@ const pageThree = (props) => {
 }
 
 const register = (props) => {
-
+  // console.log(props);
   const dispatch = useDispatch()
   const regis = useSelector(state => state.user.isRegistered)
-  const [isRegistered, setRegis] = useState(regis)
+
   const [isBottomBar, setBottomBar] = useState(true);
   const [marginLogo, setMarginLogo] = useState('25%');
 
@@ -69,7 +69,7 @@ const register = (props) => {
   const doSignUp = () => {
     const userdata = { ...user, ...data, ...data2 }
     dispatch(userSignUp(userdata))
-    dispatch(isLoading(15000))
+    // dispatch(isLoading(15000))
   }
 
   const nextButton = () => {
@@ -104,17 +104,7 @@ const register = (props) => {
     if (state.index === 2) back = 'regisPage 2'
     props.navigation.navigate(back)
   }
-  if (isRegistered) {
-    Alert.alert(
-      "Pendaftaran berhasil",
-      "Kembali ke halaman login.",
-      [
-        {},
-        { text: "OK", onPress: () => props.navigation.navigate('Login', setRegis(false)) }
-      ],
-      { cancelable: false }
-    );
-  }
+
   return (
     <>
       <SafeAreaView style={styles.container} >

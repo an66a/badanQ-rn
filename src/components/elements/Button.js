@@ -18,7 +18,7 @@ const Button = (props) => {
             width: '80%',
             backgroundColor: bgColor,
             borderRadius: br,
-            elevation: 5,
+            elevation: 3,
             height: 50,
             alignItems: 'center',
             justifyContent: 'center',

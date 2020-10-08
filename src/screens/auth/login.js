@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Input from '../../components/elements/Input'
-import { userLogin, isLoading } from '../../actions/userAction'
+import { userLogin } from '../../actions/userAction'
 import { checkUserData } from '../../actions/actionHelper'
 
 const login = (props) => {
+    // console.log(props);
     initialState = {
         username: '',
         password: '',
@@ -22,12 +23,12 @@ const login = (props) => {
         }
         dispatch(userLogin(username, password), set(initialState));
     }
- const test = ()=>{
-     dispatch(checkUserData())
- }
+    const test = () => {
+        dispatch(checkUserData())
+    }
     return (
         <SafeAreaView style={styles.container} >
-         
+
             <View >
                 <Image
                     style={styles.logo}
@@ -41,8 +42,8 @@ const login = (props) => {
             <TouchableOpacity style={styles.inputBtn} activeOpacity={0.7} onPress={() => doSign()}>
                 <Text style={styles.btnTitle}>LOGIN</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.inputBtn2} activeOpacity={0.7}  onPress={() => props.navigation.navigate('Register')}>
-           
+            <TouchableOpacity style={styles.inputBtn2} activeOpacity={0.7} onPress={() => props.navigation.navigate('Register')}>
+
                 <Text style={styles.btnTitle2}>REGISTER</Text>
             </TouchableOpacity>
 
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
         width: '80%',
         backgroundColor: '#2f4c88',
         borderRadius: 10,
-        elevation: 5,
+        elevation: 3,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
         width: '80%',
         backgroundColor: '#a2b3ce',
         borderRadius: 10,
-        elevation: 5,
+        elevation: 3,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',

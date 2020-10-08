@@ -5,7 +5,6 @@ import { Button, Input, InputSelect } from '../../components/elements/';
 import { Avatar, Accessory } from 'react-native-elements';
 import { userLogout } from '../../actions/userAction'
 
-
 const profile = (props) => {
     const dispatch = useDispatch()
     const userData = useSelector(state => state.user.userData)
@@ -45,8 +44,8 @@ const profile = (props) => {
                     />
                 </View>
 
-                <Input mtop={30} name={'Username'} value={username} alignItems={'center'} editable={false} />
-                <Input name={'Email'} value={email} alignItems={'center'} editable={false} />
+                <Input mtop={30} name={'Username'} value={username} alignItems='center' editable={false} />
+                <Input name={'Email'} value={email} alignItems='center' editable={false} />
 
                 <View style={{ width: '100%', alignItems: 'center', position: 'absolute', bottom: 15 }}>
                     <Button name='Log Out' onPress={doLogOut} />

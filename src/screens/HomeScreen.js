@@ -25,8 +25,9 @@ const HomeScreen = (props) => {
                     headerLeft: () => (
                         <TouchableOpacity style={{marginLeft: 10}}   onPress={() => props.navigation.navigate('Profile')}>
                         <Icon
-                            name='user'
+                            name='user-circle'
                             type='font-awesome'
+                            color='#fff'
                             size={25}            
                         />
                         </TouchableOpacity>
@@ -42,7 +43,7 @@ const HomeScreen = (props) => {
             <Stack.Screen name='recordBB' component={recordBB} options={{ title: 'Record BB' }} />
             <Stack.Screen name='contentScreen' component={contentScreen} options={{ title: 'Konten' }} />
             <Stack.Screen name='programScreen' component={programScreen} options={{ title: 'Program' }} />
-            <Stack.Screen name='Profile' component={Profile} options={{ title: 'Profile' }} />
+            <Stack.Screen name='Profile' component={Profile} options={{ title: 'Profil Akun' }} />
         </Stack.Navigator>
 
     )

@@ -26,7 +26,7 @@ const Input = (props) => {
         viewStyle: {
             width: inputWidth,
             backgroundColor: '#fff',
-            elevation: 5,
+            elevation: 3,
             borderRadius: 25,
             height: height,
             marginBottom: 20,
@@ -56,7 +56,6 @@ const Input = (props) => {
                     placeholder={props.placeholder}
                     onChangeText={(el) => props.set(el)}
                 />
-
             </View>
         </>
     )

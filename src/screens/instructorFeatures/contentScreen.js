@@ -1,11 +1,9 @@
-import React, { useState } from 'react'
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Keyboard, Image, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, SafeAreaView, Keyboard } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Button, Input, InputSelect } from '../../components/elements'
 
-
 const Tabs = createMaterialTopTabNavigator();
-
 
 const createContent = (props) => {
     const [state, setState] = useState({
@@ -29,11 +27,31 @@ const listContent = (props) => {
     )
 }
 
-
 const contentScreen = (props) => {
+    const [ShowTab, setShowTab] = useState('bottom')
+    useEffect(() => {
+        const keyboardDidShowListener = Keyboard.addListener(
+          'keyboardDidShow',
+          () => {
+            setShowTab('none')
+          }
+        );
+        const keyboardDidHideListener = Keyboard.addListener(
+          'keyboardDidHide',
+          () => {
+            setShowTab('bottom')
+          }
+        );
+    
+        return () => {
+          keyboardDidHideListener.remove();
+          keyboardDidShowListener.remove();
+        };
+      }, []);
     return (
         <Tabs.Navigator tabBarPosition='bottom' initialRouteName="listContent"
             backBehavior={'initialRoute'}
+            tabBarPosition={ShowTab}
             swipeEnabled={true}
             tabBarOptions={{
                 labelStyle: { fontSize: 12, color: 'white' },

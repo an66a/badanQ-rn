@@ -16,7 +16,7 @@ const InputSelect = (props) => {
             width: inputWidth,
             backgroundColor: '#fff',
             borderRadius: 25,
-            elevation: 5,
+            elevation: 3,
             height: 50,
             marginBottom: 20,
             justifyContent: 'center',

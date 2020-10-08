@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Button, Image, SafeAreaView } from 'react-native';
+import { InputDate } from '../../components/elements'
 
 const ukurKalori = (props) => {
+  
     return (
         <SafeAreaView style={styles.container}>
 

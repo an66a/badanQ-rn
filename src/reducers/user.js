@@ -13,7 +13,7 @@ const user = (state = initialState, action) => {
     case USER_REGISTERED:
       return {
         ...state,
-        isRegistered: true,
+        isRegistered: action.payload,
         isLoading: false,
       }
     case USER_LOGIN:

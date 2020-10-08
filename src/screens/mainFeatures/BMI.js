@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Image, SafeAreaView } from 'react-native';
+import { Icon } from 'react-native-elements';
 import Button from '../../components/elements/Button'
 import Input from '../../components/elements/Input'
+import InputWithTag from '../../components/elements/InputWithTag'
+
 
 
 const BMI = (props) => {
@@ -10,20 +13,46 @@ const BMI = (props) => {
         beratbadan: '',
         bmi: 'BMI',
     }
+
     const [state, setState] = useState(initialState)
 
+    const set = (e) => {
+        setState({ ...state, ...e })
+    }
+ 
     const doSubmit = () => {
         alert('do submit')
     }
+    
+
+    useEffect(() => {
+
+        return () => {
+
+        }
+    }, [])
+    console.log(state);
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.box}>
                 <Text style={styles.textBmi}>{state.bmi}</Text>
             </View>
-            <Input placeholder='Tinggi Badan ( sentimeter )' set={(e) => setState({ ...state, tinggibadan: e })} keyboardType='numeric' value={state.tinggibadan} mt={20} />
-            <Input placeholder='Berat Badan ( kilogram )' set={(e) => setState({ ...state, beratbadan: e })} keyboardType='numeric' value={state.beratbadan} />
-
-            <Button name='Kalkulasi BMI' onPress={() => doSubmit()} />
+            <InputWithTag placeholder='Tinggi Badan' tag='Cm' set={(e) => set({ tinggibadan: e })} value={state.tinggibadan} keyboardType='numeric' icon={<Icon
+                    name='human-male-height-variant'
+                    type='material-community'
+                    size={15}
+                    color='grey'
+                    style={{marginRight: 5}}
+            />} />
+            <InputWithTag placeholder='Berat Badan' tag='Kg' set={(e) => set({ beratbadan: e })} value={state.beratbadan} keyboardType='numeric' mt={20} icon={<Icon
+                    name='weight'
+                    type='font-awesome-5'
+                    size={15}
+                    color='grey'
+                    style={{marginRight: 5}}
+            />} 
+            />
+            <Button name='Kalkulasi BMI' onPress={() => doSubmit()} mt={20} />
         </SafeAreaView>
     )
 }

@@ -3,11 +3,11 @@ import CryptoJS from 'crypto-js/';
 
 const cryptoKey = 'keep-it-a-secret'; //Crypto Key
 
-export const usrt = 'userData'; //AsyncStorage userToken
+export const usrd = 'userData'; //AsyncStorage userData
 
 export const checkUserData = () => {
     return () => {
-        getStorage(usrt)
+        getStorage(usrd)
             .then(e => { console.log(e); })
     }
 }
@@ -20,7 +20,7 @@ export const getStorage = (key) => {
                 if (e !== null) {
                     const decrypted = CryptoJS.AES.decrypt(e, cryptoKey);
                     const data = decrypted.toString(CryptoJS.enc.Utf8);
-                    storage = JSON.parse(data) 
+                    storage = JSON.parse(data)
                 }
                 return storage
             })
@@ -32,5 +32,32 @@ export const saveStorage = (key, value) => {
     const encrypted = CryptoJS.AES.encrypt(JSON.stringify(value), cryptoKey)
     const data = encrypted.toString()
     AsyncStorage.setItem(key, data)
+}
+
+//sortir data
+export const userData = async () => {
+    const user = await getStorage(usrd)
+    const data = user.data
+    const recordBB = data.recordBB
+
+    //sort recordBB by date and remove key
+    let newRecordBB = []
+    for (const [key, value] of Object.entries(recordBB)) {
+        newRecordBB.push(value)
+    }
+    const compare = (a, b) => {
+        if (a.tanggal < b.tanggal) {
+            return -1;
+        }
+        if (a.tanggal > b.tanggal) {
+            return 1;
+        }
+        return 0;
+    }
+
+    newRecordBB.sort(compare)
+    data.recordBB = newRecordBB
+    //
+    return user
 }
 

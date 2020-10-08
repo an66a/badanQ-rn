@@ -2,10 +2,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import auth from '@react-native-firebase/auth';
 import database from '@react-native-firebase/database';
 import storage from '@react-native-firebase/storage';
-import { useDispatch } from 'react-redux';
-import register from '../screens/auth/register';
 
-import { getStorage, createUserToken, saveStorage, usrt } from './actionHelper';
+import { getStorage, saveStorage, userData, usrd } from './actionHelper';
 
 const db = database();
 const store = storage();
@@ -30,7 +28,7 @@ export const isLoading = (time) => {
 }
 
 const firebaseLogin = (email, password) => new Promise((resolve, reject) => {
-    console.log('firebase', email, password);
+    // console.log('firebase', email, password);
     auth().signInWithEmailAndPassword(email, password)
         .then(res => {
             resolve(res.user.uid)
@@ -51,7 +49,7 @@ const firebaseLogin = (email, password) => new Promise((resolve, reject) => {
 export const userLogin = (email, password) => {
     return (dispatch) => {
         dispatch(isLoading(5000))
-        console.log('user login', email, password);
+        // console.log('user login', email, password);
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(email) === false) {
             db.ref('users/').once('value', res => {
@@ -59,7 +57,7 @@ export const userLogin = (email, password) => {
                     if (email === value.username) {
                         firebaseLogin(value.email, password).then(uid => {
                             const user = { ...value, uid }
-                            saveStorage(usrt, user)
+                            saveStorage(usrd, user)
                             dispatch(checkUserState())
                         })
                         return
@@ -74,7 +72,7 @@ export const userLogin = (email, password) => {
                 db.ref('users/' + uid).once('value', res => {
                     const data = res.val()
                     const user = { ...data, uid }
-                    saveStorage(usrt, user)
+                    saveStorage(usrd, user)
                     dispatch(checkUserState())
                 })
             })
@@ -91,7 +89,7 @@ export const userSignUp = (userdata) => {
             store.ref('/users/' + res.user.uid + '/' + fotoname).putFile(fotopath).then(async () => {
                 const foto = await store.ref('/users/' + res.user.uid + '/' + fotoname).getDownloadURL();
                 db.ref('users/' + res.user.uid).set({ username, email, nama, jeniskelamin, role, pekerjaan, alasan, tanggallahir, telepon, foto })
-                dispatch({ type: USER_REGISTERED })
+                dispatch({ type: USER_REGISTERED, payload: true })
             })
         })
             .catch(err => {
@@ -113,20 +111,46 @@ export const userSignUp = (userdata) => {
 
 export const userLogout = () => {
     return (dispatch) => {
-        AsyncStorage.removeItem(usrt).then(res => console.log(res))
+        AsyncStorage.removeItem(usrd)
         dispatch({ type: USER_LOGOUT })
     }
 }
 
 export const checkUserState = () => {
-    return (dispatch) => {
-        getStorage(usrt).then(res => {
-            if (res.role === 'instruktur') {
-                dispatch({ type: INSTRUCTOR, payload: res })
-            } else if(res.role === 'user'){
-                dispatch({ type: USER_LOGIN, payload: res })
-            }
-        })
+    return async (dispatch) => {
+        const user = await userData();
+        if (user.role === 'instruktur') {
+            dispatch({ type: INSTRUCTOR, payload: user })
+        } else if (user.role === 'user') {
+            dispatch({ type: USER_LOGIN, payload: user })
+        }
+
     }
 }
 
+export const checkUser = () => {
+    return async (dispatch) => {
+        const user = await getStorage(usrd)
+        // console.log(user);
+        const newRecord = await db.ref('users/' + user.uid + '/data/recordBB/').once('value')
+        const newRecordBB = newRecord.val()
+
+        console.log(newRecordBB);
+    }
+}
+
+export const addRecordBB = (record) => {
+    return async (dispatch) => {
+        // console.log(record);
+        const user = await getStorage(usrd)
+        const data = user.data
+
+        db.ref('users/' + user.uid + '/data/recordBB/').push(record)
+        const newRecord = await db.ref('users/' + user.uid + '/data/recordBB/').once('value')
+        const newRecordBB = newRecord.val()
+
+        data.recordBB = newRecordBB
+        saveStorage(usrd, user)
+        dispatch(checkUserState())
+    }
+}

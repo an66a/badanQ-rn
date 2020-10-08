@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, StyleSheet, View, Text, Image, Button, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Input from './elements/Input'
-import InputSelect from '../components/elements/InputSelect'
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { InputDate, InputSelect } from '../components/elements/'
 import ImagePicker from 'react-native-image-picker';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { Button } from '../components/elements/'
 
 const registerComponent = (props) => {
+
     const stateOne = {
         email: '',
         username: '',
@@ -24,42 +25,27 @@ const registerComponent = (props) => {
         pekerjaan: '',
         fotopath: '',
     }
+
     let state = stateOne
+
+    const isRegistered = useSelector(state => state.user.isRegistered)
 
     const setParams = props.nav.setParams;
     const params = props.route.params
 
-    const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show, setShow] = useState(false);
+    // if (props.pageThree) {
+    //     console.log(params);
+    // }
     const [photoBtn, setPhoto] = useState('Upload Foto')
 
-    let tgl = date.toISOString()
-    let tanggallahir = tgl.substring(0, 10);
- 
     useEffect(() => {
         if (props.pageTwo) state = stateTwo
         if (props.pageThree) state = stateThree
         setParams(state)
-
+        return () => {
+            setParams(state)
+        }
     }, [])
-
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-        setParams({ tanggallahir })
-    };
-
-    const showMode = (currentMode) => {
-        setShow(true);
-        setMode(currentMode);
-    };
-
-    const showDatepicker = () => {
-        showMode('date');
-    };
-
     const getPhotoPath = () => {
         const options = {
             title: 'Select Photo',
@@ -69,9 +55,8 @@ const registerComponent = (props) => {
             },
         };
         ImagePicker.showImagePicker(options, (response) => {
-            // console.log(response);
             setParams({ fotopath: response.path, fotoname: response.fileName })
-            setPhoto(response.fileName)
+            if (response.fileName) return setPhoto(response.fileName)
         });
     }
     // console.log(params);
@@ -96,29 +81,10 @@ const registerComponent = (props) => {
                         : null}
 
                     {props.pageTwo ?
-                        <> 
+                        <>
                             <Input placeholder='Nama' value={params.nama} set={(e) => setParams({ nama: e })} />
+                            <InputDate title='Tanggal Lahir' value={params.tanggallahir} mb={20} set={e => setParams({ tanggallahir: e })} />
 
-                            <View>
-                                {show && (
-                                    <DateTimePicker
-                                        testID="dateTimePicker"
-                                        value={date}
-                                        mode={mode}
-                                        is24Hour={true}
-                                        display="default"
-                                        onChange={onChange}
-                                    />
-                                )}
-                            </View>
-                            <TouchableOpacity
-                                activeOpacity={0.9}
-                                onPress={showDatepicker}
-                                style={styles.inputBtn}
-                            >
-                                <Input placeholder='Tanggal Lahir' editable={false} value={params.tanggallahir} />
-                            </TouchableOpacity>
-                            
                             <InputSelect
                                 selected={params.jeniskelamin}
                                 set={(itemValue, itemIndex) =>
@@ -127,10 +93,10 @@ const registerComponent = (props) => {
                                 item2={{ label: 'Laki-laki', value: 'laki-laki' }}
                                 item3={{ label: 'Perempuan', value: 'perempuan' }}
                             />
-                            <Input placeholder='No. Telepon / Ponsel' value={params.telepon} set={(e) => setParams({ telepon: e })} />
+                            <Input placeholder='No. Telepon / Ponsel' value={params.telepon} keyboardType='numeric' set={(e) => setParams({ telepon: e })} />
                         </>
                         : null}
-                        
+
                     {props.pageThree ?
                         <>
                             <Input placeholder='Alasan Bergabung' value={params.alasan} set={(e) => setParams({ alasan: e })} />
@@ -143,6 +109,16 @@ const registerComponent = (props) => {
                             >
                                 <Text style={styles.btnTitle2}>{photoBtn}</Text>
                             </TouchableOpacity>
+
+                            {isRegistered ?
+                                <View style={{ marginTop: 20, width: '100%', alignItems: 'center', position: 'absolute', bottom: 20 }}>
+                                    <Text style={{ marginBottom: 10, fontWeight: 'bold', color: 'grey' }}>Pendaftaran Berhasil</Text>
+                                    <Button name='Ke Halaman Login' onPress={() => props.nav.reset({
+                                        index: 0,
+                                        routes: [{ name: 'Login' }],
+                                    })} white />
+                                </View>
+                                : null}
                         </>
                         : null}
                 </SafeAreaView>
@@ -172,7 +148,7 @@ const styles = StyleSheet.create({
     inputBtn2: {
         width: '80%',
         backgroundColor: '#fff',
-        elevation: 5,
+        elevation: 3,
         borderRadius: 25,
         height: 50,
         alignItems: 'center',
