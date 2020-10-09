@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Image, SafeAreaView
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Input, InputSelect } from '../../components/elements/';
 import { Avatar, Accessory } from 'react-native-elements';
-import { userLogout } from '../../actions/userAction'
+import { userLogout, deleteAllRecordBB } from '../../actions/userAction'
 
 const profile = (props) => {
     const dispatch = useDispatch()
@@ -31,6 +31,22 @@ const profile = (props) => {
             { cancelable: false }
         );
     }
+    
+    const doDelete = () => {
+        Alert.alert(
+            "Hapus Catatan Berat Badan",
+            "Apa kamu yakin mau menghapus catatan bertat badan?",
+            [
+                {
+                    text: "Cancel",
+                    style: "cancel"
+                },
+                { text: "OK", onPress: () => dispatch(deleteAllRecordBB()) }
+            ],
+            { cancelable: false }
+        );
+    }
+    
     return (
         userData ?
             <SafeAreaView style={styles.container}>
@@ -47,7 +63,9 @@ const profile = (props) => {
                 <Input mtop={30} name={'Username'} value={username} alignItems='center' editable={false} />
                 <Input name={'Email'} value={email} alignItems='center' editable={false} />
 
+              
                 <View style={{ width: '100%', alignItems: 'center', position: 'absolute', bottom: 15 }}>
+                    <Button name='Hapus Catatan BB' onPress={doDelete} mb={20} />
                     <Button name='Log Out' onPress={doLogOut} />
                 </View>
 

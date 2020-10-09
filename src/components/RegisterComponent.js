@@ -6,6 +6,7 @@ import ImagePicker from 'react-native-image-picker';
 import { useSelector } from 'react-redux';
 import { Button } from '../components/elements/'
 
+
 const registerComponent = (props) => {
 
     const stateOne = {
@@ -32,7 +33,7 @@ const registerComponent = (props) => {
 
     const setParams = props.nav.setParams;
     const params = props.route.params
-    
+
     const [photoBtn, setPhoto] = useState('Upload Foto')
 
     useEffect(() => {
@@ -41,8 +42,10 @@ const registerComponent = (props) => {
         setParams(state)
         return () => {
             setParams(state)
+
         }
-    }, [])
+    }, [isRegistered])
+
     const getPhotoPath = () => {
         const options = {
             title: 'Select Photo',
@@ -53,10 +56,12 @@ const registerComponent = (props) => {
         };
         ImagePicker.showImagePicker(options, (response) => {
             setParams({ fotopath: response.path, fotoname: response.fileName })
-            if (response.fileName) return setPhoto(response.fileName)
+            if (response.fileName) {
+                setPhoto(response.fileName)
+            }
         });
     }
-    // console.log(params);
+
     return (
         (params ?
             <>

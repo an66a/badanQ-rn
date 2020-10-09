@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack';
 import AuthScreen from '../screens/AuthScreen'
 import HomeScreen from './HomeScreen'
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { checkUserState } from '../actions/userAction'
+import { checkUserState } from '../actions/userAction';
+
 // import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Stack = createStackNavigator();
@@ -20,8 +21,10 @@ const MainApp = (props) => {
         dispatch(checkUserState())
     }, [])
 
+    
     return (
         <>
+           
             <Spinner
                 visible={isLoading}
                 textContent={'Loading...'}

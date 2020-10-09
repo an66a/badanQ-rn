@@ -91,7 +91,7 @@ export const userSignUp = (userdata) => {
             store.ref('/users/' + res.user.uid + '/' + fotoname).putFile(fotopath).then(async () => {
                 const foto = await store.ref('/users/' + res.user.uid + '/' + fotoname).getDownloadURL();
                 db.ref('users/' + res.user.uid).set({ username, email, nama, jeniskelamin, role, pekerjaan, alasan, tanggallahir, telepon, foto })
-                dispatch({ type: USER_REGISTERED })
+                dispatch({ type: USER_REGISTERED, payload: true })
             })
         })
             .catch(err => {
@@ -168,6 +168,7 @@ export const addRecordBB = (record) => {
         }
     }
 }
+
 export const deleteRecordBB = (item) => {
     return async (dispatch) => {
         // console.log('item', item);
@@ -187,6 +188,20 @@ export const deleteRecordBB = (item) => {
         const newRecordBB = newRecord.val()
         const data = user.data
         data.recordBB = newRecordBB
+        saveStorage(usrd, user)
+        dispatch(checkUserState())
+    }
+}
+
+export const deleteAllRecordBB = () => {
+    return async (dispatch) => {
+        // console.log('item', item);
+        const user = await getStorage(usrd)
+
+        db.ref('users/' + user.uid + '/data/recordBB/').remove()
+
+        delete user.data
+        console.log(user);
         saveStorage(usrd, user)
         dispatch(checkUserState())
     }

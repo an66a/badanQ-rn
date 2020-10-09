@@ -32,10 +32,8 @@ const recordBB = ({ navigation }) => {
         setState({ ...state, record })
     }
 
-    // console.log(state);
-
     useEffect(() => {
-        if (user) {
+        if (user.data) {
             recordData()
         }
         // setState({...state, tanggal})
