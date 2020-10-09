@@ -119,6 +119,8 @@ export const userLogout = () => {
 export const checkUserState = () => {
     return async (dispatch) => {
         const user = await userData();
+        if (user === undefined) return
+        
         if (user.role === 'instruktur') {
             dispatch({ type: INSTRUCTOR, payload: user })
         } else if (user.role === 'user') {

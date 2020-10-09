@@ -38,8 +38,8 @@ export const saveStorage = (key, value) => {
 export const userData = async () => {
     const user = await getStorage(usrd)
     const data = user.data
+    if(data == undefined) return
     const recordBB = data.recordBB
-
     //sort recordBB by date and remove key
     let newRecordBB = []
     for (const [key, value] of Object.entries(recordBB)) {
@@ -47,10 +47,10 @@ export const userData = async () => {
     }
     const compare = (a, b) => {
         if (a.tanggal < b.tanggal) {
-            return -1;
+            return 1;
         }
         if (a.tanggal > b.tanggal) {
-            return 1;
+            return -1;
         }
         return 0;
     }
