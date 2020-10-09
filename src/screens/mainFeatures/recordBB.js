@@ -1,19 +1,24 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Image, SafeAreaView, FlatList, ScrollView } from 'react-native';
 import { Button, InputDate, InputWithTag } from '../../components/elements/'
-import { Icon } from 'react-native-elements';
-import { addRecordBB } from '../../actions/userAction'
+import { Icon, Overlay } from 'react-native-elements';
+import { addRecordBB, deleteRecordBB } from '../../actions/userAction'
 import { useDispatch, useSelector } from 'react-redux';
 
 const recordBB = ({ navigation }) => {
     const dispatch = useDispatch();
     // console.log(props);
+    const [date, setDate] = useState(new Date());
+    let tgl = date.toISOString()
+    let tanggal = tgl.substring(0, 10);
+
     initialState = {
-        tanggal: '',
+        tanggal: tanggal,
         berat_badan: '',
     }
 
     const [state, setState] = useState(initialState)
+
     const [inputRecord, showInput] = useState(false)
 
     const set = (e) => {
@@ -27,8 +32,13 @@ const recordBB = ({ navigation }) => {
         setState({ ...state, record })
     }
 
+    // console.log(state);
+
     useEffect(() => {
-        recordData()
+        if (user) {
+            recordData()
+        }
+        // setState({...state, tanggal})
         return () => {
 
         }
@@ -77,42 +87,62 @@ const recordBB = ({ navigation }) => {
         });
     }, [inputRecord]);
 
+
+    const doDelete = () => {
+        const { item } = state
+        dispatch(deleteRecordBB(item), setVisible(false))
+    }
+
+    const [visible, setVisible] = useState(false);
+
+    const toggleOverlay = () => {
+        setVisible(!visible);
+    };
+
+    // console.log(state);
     const renderRow = (props) => {
         const item = props.item
-        // console.log(item);
+        // console.log(props);
         return (
-
-            <View style={styles.renderRow}>
-                <View style={styles.flatlistRow}>
-                    <Icon
-                        name='calendar'
-                        type='font-awesome'
-                        size={15}
-                        color='grey'
-                        style={{ marginRight: 5 }}
-                    />
-                    <Text>{item.tanggal}</Text>
+            <TouchableOpacity onPress={() => setState({ ...state, item }, toggleOverlay())} activeOpacity={0.5}  >
+                <View style={styles.renderRow}>
+                    <View style={styles.flatlistRow}>
+                        <Icon
+                            name='calendar'
+                            type='font-awesome'
+                            size={15}
+                            color='grey'
+                            style={{ marginRight: 5 }}
+                        />
+                        <Text>{item.tanggal}</Text>
+                    </View>
+                    <View style={styles.flatlistRow}>
+                        <Text >{item.berat_badan}</Text>
+                        <Text style={{ color: 'grey', fontFamily: 'Quicksand' }}> Kg </Text>
+                        <Icon
+                            name='weight'
+                            type='font-awesome-5'
+                            size={15}
+                            color='grey'
+                            style={{ marginRight: 0, marginLeft: 3 }}
+                        />
+                    </View>
                 </View>
-                <View style={styles.flatlistRow}>
-                    <Text >{item.berat_badan}</Text>
-                    <Text style={{ color: 'grey' }}> Kg </Text>
-                    <Icon
-                        name='weight'
-                        type='font-awesome-5'
-                        size={15}
-                        color='grey'
-                        style={{ marginRight: 0, marginLeft: 3 }}
-                    />
-                </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 
     let height = '100%'
-    if(inputRecord) height = '68%'
+    if (inputRecord) height = '78%'
 
     return (
         <>
+            <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+                <TouchableOpacity onPress={() => doDelete()} activeOpacity={0.5}  >
+                    <Text style={styles.btnDelete}>Hapus Data</Text>
+                </TouchableOpacity>
+            </Overlay>
+
             <SafeAreaView style={styles.container}>
                 <View style={{
                     backgroundColor: '#fff',
@@ -139,13 +169,14 @@ const recordBB = ({ navigation }) => {
                 </View>
                 {inputRecord ?
                     <>
-                        <InputDate set={e => set({ tanggal: e })} value={state.tanggal} mb={20} mt={20} />
+                        {/* <InputDate set={e => set({ tanggal: e })} value={state.tanggal} mb={20} mt={20} /> */}
                         <InputWithTag
                             set={e => set({ berat_badan: e })}
                             value={state.berat_badan}
                             placeholder='Berat Badan'
                             tag='Kg'
                             mb={20}
+                            mt={20}
                             type='numeric'
                             icon={<Icon
                                 name='weight'
@@ -186,6 +217,12 @@ const styles = StyleSheet.create({
     btnTitle: {
         color: '#fff',
         fontWeight: 'bold',
+        fontFamily: 'Quicksand',
+    },
+    btnDelete: {
+        color: 'black',
+        // fontWeight: 'bold',
+        fontFamily: 'Quicksand',
     },
     menuBtn: {
         width: '50%',
@@ -230,8 +267,9 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     flatListheaderTitle: {
-        fontWeight: "bold",
+        // fontWeight: "bold",
         color: '#fff',
+        fontFamily: 'Quicksand',
         marginRight: 5,
         marginLeft: 5
     }

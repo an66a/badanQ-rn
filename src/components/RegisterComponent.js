@@ -32,10 +32,7 @@ const registerComponent = (props) => {
 
     const setParams = props.nav.setParams;
     const params = props.route.params
-
-    // if (props.pageThree) {
-    //     console.log(params);
-    // }
+    
     const [photoBtn, setPhoto] = useState('Upload Foto')
 
     useEffect(() => {

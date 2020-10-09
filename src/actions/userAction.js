@@ -32,6 +32,7 @@ const firebaseLogin = (email, password) => new Promise((resolve, reject) => {
     auth().signInWithEmailAndPassword(email, password)
         .then(res => {
             resolve(res.user.uid)
+            console.log(res);
         })
         .catch(err => {
             switch (err.code) {
@@ -57,6 +58,7 @@ export const userLogin = (email, password) => {
                     if (email === value.username) {
                         firebaseLogin(value.email, password).then(uid => {
                             const user = { ...value, uid }
+                            // console.log(user);
                             saveStorage(usrd, user)
                             dispatch(checkUserState())
                         })
@@ -89,7 +91,7 @@ export const userSignUp = (userdata) => {
             store.ref('/users/' + res.user.uid + '/' + fotoname).putFile(fotopath).then(async () => {
                 const foto = await store.ref('/users/' + res.user.uid + '/' + fotoname).getDownloadURL();
                 db.ref('users/' + res.user.uid).set({ username, email, nama, jeniskelamin, role, pekerjaan, alasan, tanggallahir, telepon, foto })
-                dispatch({ type: USER_REGISTERED, payload: true })
+                dispatch({ type: USER_REGISTERED })
             })
         })
             .catch(err => {
@@ -111,6 +113,7 @@ export const userSignUp = (userdata) => {
 
 export const userLogout = () => {
     return (dispatch) => {
+        auth().signOut()
         AsyncStorage.removeItem(usrd)
         dispatch({ type: USER_LOGOUT })
     }
@@ -119,8 +122,9 @@ export const userLogout = () => {
 export const checkUserState = () => {
     return async (dispatch) => {
         const user = await userData();
+        // console.log(user);
         if (user === undefined) return
-        
+
         if (user.role === 'instruktur') {
             dispatch({ type: INSTRUCTOR, payload: user })
         } else if (user.role === 'user') {
@@ -130,27 +134,58 @@ export const checkUserState = () => {
     }
 }
 
-export const checkUser = () => {
-    return async (dispatch) => {
-        const user = await getStorage(usrd)
-        // console.log(user);
-        const newRecord = await db.ref('users/' + user.uid + '/data/recordBB/').once('value')
-        const newRecordBB = newRecord.val()
+// export const checkUser = () => {
+//     return async (dispatch) => {
+//         const user = await getStorage(usrd)
+//         console.log(user);
+//         const newRecord = await db.ref('users/' + user.uid + '/data/recordBB/').once('value')
+//         const newRecordBB = newRecord.val()
 
-        console.log(newRecordBB);
-    }
-}
+//         console.log(newRecordBB);
+//     }
+// }
 
 export const addRecordBB = (record) => {
     return async (dispatch) => {
         // console.log(record);
         const user = await getStorage(usrd)
-        const data = user.data
 
         db.ref('users/' + user.uid + '/data/recordBB/').push(record)
         const newRecord = await db.ref('users/' + user.uid + '/data/recordBB/').once('value')
         const newRecordBB = newRecord.val()
 
+        if (user.data) {
+            const data = user.data
+            data.recordBB = newRecordBB
+            saveStorage(usrd, user)
+            dispatch(checkUserState())
+        } else {
+            let recordBB = newRecordBB
+            let data = { recordBB }
+            let newUserData = { ...user, data }
+            saveStorage(usrd, newUserData)
+            dispatch(checkUserState())
+        }
+    }
+}
+export const deleteRecordBB = (item) => {
+    return async (dispatch) => {
+        // console.log('item', item);
+        const user = await getStorage(usrd)
+
+        const dataRecord = await db.ref('users/' + user.uid + '/data/recordBB/').once('value')
+        const record = dataRecord.val()
+
+        for (const [key, value] of Object.entries(record)) {
+            if (item.tanggal === value.tanggal && item.berat_badan === value.berat_badan) {
+                db.ref('users/' + user.uid + '/data/recordBB/' + key).remove()
+                break
+            }
+        }
+
+        const newRecord = await db.ref('users/' + user.uid + '/data/recordBB/').once('value')
+        const newRecordBB = newRecord.val()
+        const data = user.data
         data.recordBB = newRecordBB
         saveStorage(usrd, user)
         dispatch(checkUserState())

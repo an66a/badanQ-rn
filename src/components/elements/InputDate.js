@@ -31,7 +31,8 @@ const InputDate = (props) => {
         },
         btnTitle: {
             color: 'grey',
-            marginLeft: 5
+            marginLeft: 5,
+            fontFamily: 'Quicksand',
             // fontWeight: 'bold',
         },
     })

@@ -24,7 +24,7 @@ const BMI = (props) => {
         const tinggi = Math.pow(tinggiMeter, 2)
         const total = berat / tinggi
         const round = (value, precision) => {
-            var multiplier = Math.pow(10, precision || 0);
+            let multiplier = Math.pow(10, precision || 0);
             return Math.round(value * multiplier) / multiplier;
         }
         const bmi = round(total, 2)
@@ -106,7 +106,8 @@ const styles = StyleSheet.create({
         color: 'grey',
         fontWeight: 'bold',
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'Quicksand',
     },
 })
 export default BMI

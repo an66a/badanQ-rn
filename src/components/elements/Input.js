@@ -13,7 +13,7 @@ const Input = (props) => {
         align = 'top';
         line = true;
     }
-    
+
     if (props.inputWidth) inputWidth = props.inputWidth
 
     const styles = StyleSheet.create({
@@ -21,6 +21,7 @@ const Input = (props) => {
             height: height,
             color: 'grey',
             fontSize: 15,
+            fontFamily: 'Quicksand',
             textAlignVertical: align,
         },
         viewStyle: {
@@ -39,7 +40,7 @@ const Input = (props) => {
     return (
         <>
             {props.name ?
-                <Text style={{ marginBottom: 5, fontSize: 20, fontWeight: 'bold', color: 'grey', alignItems: 'center', marginTop: props.mtop }}>{props.name}</Text>
+                <Text style={{ marginBottom: 5, fontSize: 20, fontWeight: 'bold', color: 'grey', alignItems: 'center', marginTop: props.mtop, fontFamily: 'Quicksand'}}>{props.name}</Text>
                 : null}
 
             <View style={styles.viewStyle} >

@@ -24,9 +24,11 @@ const InputWithTag = (props) => {
         input: {
             flex: 1,
             height: 50,
+            fontFamily: 'Quicksand'
         },
         textTag:{
-            color: 'grey'
+            color: 'grey',
+            fontFamily: 'Quicksand',
         }
     })
     return (
