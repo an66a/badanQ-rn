@@ -1,3 +1,3 @@
-# react-native-test-project
+# BadanQ App
 
 TIM 2 (Shirleen, Dian, Angga)
