@@ -2,25 +2,27 @@ import React, { useState } from 'react'
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkUser } from '../../actions/userAction'
+import { checkUserState, addRecordBB } from '../../actions/userAction'
 
 
 
 const MainHome = (props) => {
     const dispatch = useDispatch()
     const isInstructor = useSelector(state => state.user.isInstructor)
+    const isMember = useSelector(state => state.user.isMember)
     const navTo = props.navigation.navigate;
     // const [isInstructor, setstate] = useState(true) // debug
-    const [isDebug, setDebug] = useState(true)
+    const [isDebug, setDebug] = useState(false)
+
     const debug1 = 'check user'
     const debug2 = 'debug2'
     const debug3 = 'debug3'
 
     const doDebug1 = () => {
-        dispatch(checkUser())
+        dispatch(checkUserState())
     }
     const doDebug2 = () => {
-        
+        dispatch(addRecordBB())
     }
     return (
         <SafeAreaView style={styles.container}>
@@ -54,7 +56,7 @@ const MainHome = (props) => {
                             size={25}
                             style={styles.icon}
                         />
-                        <Text style={styles.btnTitle} >Record BB</Text>
+                        <Text style={styles.btnTitle} >Catatan BB</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -66,11 +68,45 @@ const MainHome = (props) => {
                             size={25}
                             style={styles.icon}
                         />
-                        <Text style={styles.btnTitle}>Rencana BB</Text>
+                        <Text style={styles.btnTitle}>Rencana Berat Badan</Text>
                     </TouchableOpacity>
 
                 </View>
             </View>
+
+            {isMember ?
+                <View style={styles.box}>
+                    <View style={styles.menuContainer}>
+                        <TouchableOpacity style={styles.menuBtn} activeOpacity={0.4} onPress={() => alert('to Konten')}>
+                            <Icon
+                                name='table-of-contents'
+                                type='material-community'
+                                size={25}
+                                style={styles.icon}
+                            />
+                            <Text style={styles.btnTitle}>Konten</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.menuBtn} activeOpacity={0.4} onPress={() => alert('to Program')}>
+                            <Icon
+                                name='profile'
+                                type='ant-design'
+                                size={25}
+                                style={styles.icon}
+                            />
+                            <Text style={styles.btnTitle} >Program</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.menuBtn} activeOpacity={0.4} onPress={() => alert('to Instruktur')}>
+                            <Icon
+                                name='users'
+                                type='font-awesome'
+                                size={25}
+                                style={styles.icon}
+                            />
+                            <Text style={styles.btnTitle} >Instruktur</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                : null}
 
             {isInstructor ?
                 <View style={styles.box}>
@@ -168,7 +204,8 @@ const styles = StyleSheet.create({
     },
     btnTitle: {
         color: '#444444',
-        fontWeight: 'bold',
+        fontFamily: 'Quicksand',
+        // fontWeight: 'bold',
     },
     menuBtn: {
         flex: 1,

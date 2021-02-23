@@ -5,12 +5,13 @@ import { Picker } from '@react-native-community/picker';
 const InputSelect = (props) => {
     let inputWidth;
     if (props.inputWidth === undefined) { inputWidth = '80%' } //default input width
-    
+
     const styles = StyleSheet.create({
         inputSelect: {
             height: 50,
             width: '100%',
-            color: 'grey'
+            color: 'grey',
+            fontFamily: 'Quicksand',
         },
         viewStyle: {
             width: inputWidth,
@@ -28,13 +29,14 @@ const InputSelect = (props) => {
         <View style={styles.viewStyle} >
             <Picker
                 selectedValue={props.selected}
-                style={styles.inputSelect}
                 onValueChange={props.set}
-                >
-          {props.item1 ?  <Picker.Item label={props.item1.label} value={props.item1.value} />  : null}    
-          {props.item2 ?  <Picker.Item label={props.item2.label} value={props.item2.value} />  : null}    
-          {props.item3 ?  <Picker.Item label={props.item3.label} value={props.item3.value} />  : null}    
-           
+                style={styles.inputSelect}
+                // itemStyle={styles.inputSelect}
+            >
+                {props.item1 ? <Picker.Item label={props.item1.label} value={props.item1.value} /> : null}
+                {props.item2 ? <Picker.Item label={props.item2.label} value={props.item2.value} /> : null}
+                {props.item3 ? <Picker.Item label={props.item3.label} value={props.item3.value} /> : null}
+
             </Picker>
         </View>
     )

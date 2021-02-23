@@ -42,7 +42,7 @@ const HomeScreen = (props) => {
             <Stack.Screen name='rencanaBB' component={rencanaBB} options={{ title: 'Rencana BB' }} />
             <Stack.Screen name='recordBB' component={recordBB} 
                 options={({ navigation, route }) => ({
-                    title: 'Record BB',
+                    title: 'Catatan BB',
                   })} />
             <Stack.Screen name='contentScreen' component={contentScreen} options={{ title: 'Konten' }} />
             <Stack.Screen name='programScreen' component={programScreen} options={{ title: 'Program' }} />

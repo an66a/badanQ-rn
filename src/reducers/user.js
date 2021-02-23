@@ -4,6 +4,7 @@ initialState = {
   isLoading: false,
   isLogin: false,
   isInstructor: false,
+  isMember: false,
   isRegistered: false,
   userData: null,
 }
@@ -21,6 +22,7 @@ const user = (state = initialState, action) => {
         ...state,
         isLogin: true,
         isLoading: false,
+        isMember: true,
         userData: action.payload
       }
     case INSTRUCTOR:

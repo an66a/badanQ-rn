@@ -3,7 +3,9 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { StyleSheet, View, Text, TouchableOpacity, Keyboard, Alert, Image, SafeAreaView } from 'react-native';
 import RegisComp from '../../components/RegisterComponent'
 import { useDispatch, useSelector } from 'react-redux';
-import { userSignUp, isLoading } from '../../actions/userAction'
+import { userSignUp, isLoading, USER_REGISTERED } from '../../actions/userAction'
+import { Icon, Overlay } from 'react-native-elements';
+import { Button } from '../../components/elements/'
 
 const Tabs = createMaterialTopTabNavigator();
 
@@ -105,8 +107,25 @@ const register = (props) => {
     props.navigation.navigate(back)
   }
 
+  // const isRegistered = useSelector(state => state.user.isRegistered)
+
+
+  // const toggleOverlay = () => {
+  //   setVisible(!visible);
+  // };
+
   return (
     <>
+{/* 
+      <Overlay isVisible={isRegistered} onBackdropPress={toggleOverlay} >
+        <View style={{ flex: 0, flexDirection: 'column', justifyContent: 'center', alignItems: 'ce' }}>
+        <Text style={styles.btnDelete}>Registrasi Berhasil</Text>
+        <TouchableOpacity onPress={() => dispatch({ type: USER_REGISTERED, payload: false }, props.navigation.navigate('Login'))} activeOpacity={0.5} style={styles.toLoginBtn} >
+          <Text style={{ color: '#fff' }}>Ke Halaman Login</Text>
+        </TouchableOpacity>
+        </View>
+      </Overlay> */}
+
       <SafeAreaView style={styles.container} >
         <View style={{ alignItems: 'center', marginTop: marginLogo }}>
           <Image
@@ -164,6 +183,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 0
+  },
+  toLoginBtn: {
+    width: '100%',
+    backgroundColor: '#2f4c88',
+    borderRadius: 10,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    padding: 20
   }
 })
 

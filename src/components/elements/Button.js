@@ -12,7 +12,8 @@ const Button = (props) => {
     const styles = StyleSheet.create({
         btnTitle: {
             color: fontColor,
-            fontWeight: 'bold',
+            fontWeight: '900',
+            fontFamily: 'Quicksand',
         },
         inputBtn: {
             width: '80%',

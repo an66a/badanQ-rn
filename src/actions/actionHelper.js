@@ -37,27 +37,34 @@ export const saveStorage = (key, value) => {
 //sortir data
 export const userData = async () => {
     const user = await getStorage(usrd)
-    const data = user.data
-    if(data == undefined) return
-    const recordBB = data.recordBB
-    //sort recordBB by date and remove key
-    let newRecordBB = []
-    for (const [key, value] of Object.entries(recordBB)) {
-        newRecordBB.push(value)
-    }
-    const compare = (a, b) => {
-        if (a.tanggal < b.tanggal) {
-            return 1;
-        }
-        if (a.tanggal > b.tanggal) {
-            return -1;
-        }
-        return 0;
-    }
 
-    newRecordBB.sort(compare)
-    data.recordBB = newRecordBB
-    //
-    return user
+    console.log(user.data);
+
+    if (user.data !== undefined) {
+        let data = user.data
+        let recordBB = data.recordBB
+        //sort recordBB by date and remove key
+        let newRecordBB = []
+        for (const [key, value] of Object.entries(recordBB)) {
+            newRecordBB.push(value)
+        }
+        const compare = (a, b) => {
+            if (a.tanggal < b.tanggal) {
+                return 1;
+            }
+            if (a.tanggal > b.tanggal) {
+                return -1;
+            }
+            return 0;
+        }
+
+        newRecordBB.sort(compare)
+        data.recordBB = newRecordBB
+
+        return user
+    }
+    if (user.data === undefined) {
+        return user
+    }
 }
 
